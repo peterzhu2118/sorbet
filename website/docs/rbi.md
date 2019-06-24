@@ -179,7 +179,8 @@ way to include RBI files into a project.
 The way this works is that when `srb` will load a project's `Gemfile` to find
 the source folders for every gem in a project. If any gems have a top-level
 `rbi/` or `rbis/` folder, `srb` will collect the paths to any such folders into
-a file (`sorbet/rbi_list`) and mention this file in the `sorbet/config` file.
+a file and pass them as arguments transparently when running `srb tc`. The
+results of this process are cached based on the contents of the `Gemfile.lock`.
 
 ## The Hidden Definition RBI
 

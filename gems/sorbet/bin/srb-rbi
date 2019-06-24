@@ -193,7 +193,7 @@ If instead you want to explore your files locally, here are some things to try:
       exit(1)
     when 'config', Sorbet::Private::CreateConfig.output_file
       make_step(Sorbet::Private::CreateConfig)
-    when 'sorbet-typed', Sorbet::Private::FetchRBIs.output_file, Sorbet::Private::FetchRBIs::SORBET_RBI_LIST
+    when 'sorbet-typed', Sorbet::Private::FetchRBIs.output_file
       make_step(Sorbet::Private::FetchRBIs)
     when 'gems', Sorbet::Private::GemGeneratorTracepoint.output_file
       make_step(Sorbet::Private::GemGeneratorTracepoint)

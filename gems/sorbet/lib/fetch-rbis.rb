@@ -13,7 +13,6 @@ module Sorbet::Private; end
 class Sorbet::Private::FetchRBIs
   SORBET_DIR = 'sorbet'
   SORBET_CONFIG_FILE = "#{SORBET_DIR}/config"
-  SORBET_RBI_LIST = "#{SORBET_DIR}/rbi_list"
   SORBET_RBI_SORBET_TYPED = "#{SORBET_DIR}/rbi/sorbet-typed/"
 
   XDG_CACHE_HOME = ENV['XDG_CACHE_HOME'] || "#{ENV['HOME']}/.cache"
