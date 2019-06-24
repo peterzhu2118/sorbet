@@ -166,6 +166,7 @@ NameDef names[] = {
     {"merchant"},
     {"foreign"},
     {"computedBy", "computed_by"},
+    {"factory"},
     {"Chalk", "Chalk", true},
     {"ODM", "ODM", true},
     {"Mutator", "Mutator", true},
