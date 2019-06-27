@@ -17,6 +17,23 @@ module T::Configuration
     T::Private::RuntimeLevels.enable_checking_in_tests
   end
 
+  # Call this method to disable any sort of typechecking in runtime. Used to
+  # remove sorbet-runtime introduced type errors and slightly improve
+  # performance. By default, runtime typechecking is enabled.
+  #
+  # Note: This method is not reversible (i.e. it is not possible re-enable
+  # runtime typechecks later in your code).
+  #
+  # @example
+  #   T::Configuration.disable_runtime_typecheck! if ENV['RAILS_ENV'] == 'production'
+  def self.disable_runtime_typecheck!
+    if defined?(::T)
+      Object.send(:remove_const, :T)
+    end
+
+    load File.expand_path('../noops.rb', __FILE__)
+  end
+
   # Set a handler to handle `TypeError`s raised by any in-line type assertions,
   # including `T.must`, `T.let`, `T.cast`, and `T.assert_type!`.
   #

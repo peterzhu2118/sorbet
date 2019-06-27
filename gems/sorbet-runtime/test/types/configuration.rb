@@ -15,6 +15,99 @@ module Opus::Types::Test
       def self.receive(*); end
     end
 
+    describe 'disable_runtime_typecheck!' do
+      before do
+        @old_t = ::T
+
+        T::Configuration.disable_runtime_typecheck!
+      end
+
+      after do
+        Object.send(:remove_const, :T)
+        ::T = @old_t
+      end
+
+      it 'does not check sig' do
+        mod = Module.new do
+          extend T::Sig
+
+          sig {params(x: Integer).void}
+          def self.foo(x); end
+        end
+
+        mod.foo("hello")
+      end
+
+      it 'does not check T.must' do
+        val = T.must(nil)
+
+        assert_nil(val)
+      end
+
+      it 'does not check T.let' do
+        val = T.let("1", Integer)
+
+        assert_equal("1", val)
+      end
+
+      it 'does not check T.cast' do
+        val = T.cast("1", Integer)
+
+        assert_equal("1", val)
+      end
+
+      it 'does not check T.assert_type!' do
+        T.assert_type!("1", Integer)
+      end
+
+      it 'does not check abstract' do
+        mod = Module.new do
+          extend T::Sig
+          extend T::Helpers
+
+          abstract!
+
+          sig {abstract.returns(Object)}
+          def self.foo; end
+        end
+
+        mod.foo
+      end
+
+      it 'does not check interface' do
+        base = Module.new do
+          extend T::Sig
+          extend T::Helpers
+          interface!
+
+          sig {abstract.void}
+          def foo; end
+        end
+
+        klass = Class.new do
+          include base
+        end
+
+        klass.new.foo
+      end
+
+      it 'does not check struct' do
+        struct = Class.new(T::Struct) do
+          prop :x, Integer
+          const :y, String
+        end
+
+        a = struct.new(x: "hello", y: 10)
+        a.x = "foobar"
+        assert_equal("foobar", a.x)
+        assert_equal(10, a.y)
+
+        assert_raises do
+          a.y = 20
+        end
+      end
+    end
+
     describe 'inline_type_error_handler' do
       describe 'when in default state' do
         it 'T.must raises an error' do
