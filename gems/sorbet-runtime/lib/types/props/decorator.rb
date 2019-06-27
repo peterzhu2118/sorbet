@@ -129,6 +129,8 @@ class T::Props::Decorator
   # Passing in rules here is purely a performance optimization.
   sig {params(prop: Symbol, val: T.untyped, rules: Rules).void}
   private def check_prop_type(prop, val, rules=prop_rules(prop))
+    return unless T::Configuration.enable_runtime_typecheck?
+
     type_object = rules.fetch(:type_object)
     type = rules.fetch(:type)
 

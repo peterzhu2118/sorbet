@@ -114,6 +114,7 @@ module T
   #
   # Compared to `T.let`, `T.cast` is _trusted_ by static system.
   def self.cast(value, type, checked: true)
+    return value unless T::Configuration.enable_runtime_typecheck?
     return value unless checked
 
     Private::Casts.cast(value, type, cast_method: "T.cast")
@@ -129,6 +130,7 @@ module T
   # If `checked` is true, raises an exception at runtime if the value
   # doesn't match the type.
   def self.let(value, type, checked: true)
+    return value unless T::Configuration.enable_runtime_typecheck?
     return value unless checked
 
     Private::Casts.cast(value, type, cast_method: "T.let")
@@ -139,6 +141,7 @@ module T
   # statically known and being checked appropriately. If `checked` is true, raises an exception at
   # runtime if the value doesn't match the type.
   def self.assert_type!(value, type, checked: true)
+    return value unless T::Configuration.enable_runtime_typecheck?
     return value unless checked
 
     Private::Casts.cast(value, type, cast_method: "T.assert_type!")
@@ -178,6 +181,8 @@ module T
   #
   # sig {params(arg: T.nilable(A), msg: T.nilable(String)).returns(A)}
   def self.must(arg, msg=nil)
+    return arg unless T::Configuration.enable_runtime_typecheck?
+
     begin
       if msg
         if !T.unsafe(msg).is_a?(String)

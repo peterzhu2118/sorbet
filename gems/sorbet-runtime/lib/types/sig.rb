@@ -20,6 +20,6 @@ module T::Sig
   # {T::Helpers}
   T::Sig::WithoutRuntime.sig {params(blk: T.proc.bind(T::Private::Methods::DeclBuilder).void).void}
   def sig(&blk) # rubocop:disable PrisonGuard/BanBuiltinMethodOverride
-    T::Private::Methods.declare_sig(self, &blk)
+    T::Private::Methods.declare_sig(self, &blk) if T::Configuration.enable_runtime_typecheck?
   end
 end

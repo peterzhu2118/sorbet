@@ -17,6 +17,20 @@ module T::Configuration
     T::Private::RuntimeLevels.enable_checking_in_tests
   end
 
+  # Set this to true to disable any sort of typechecking in runtime. Used to
+  # remove sorbet-runtime introduced type errors and slightly improve
+  # performance. By default, runtime typecheking is enabled.
+  #
+  # @param [Boolean] value True to enable runtime typechecking, false to
+  #   disable.
+  def self.enable_runtime_typecheck=(value)
+    @enable_runtime_typecheck = value
+  end
+
+  def self.enable_runtime_typecheck?
+    @enable_runtime_typecheck.nil? ? true : @enable_runtime_typecheck
+  end
+
   # Set a handler to handle `TypeError`s raised by any in-line type assertions,
   # including `T.must`, `T.let`, `T.cast`, and `T.assert_type!`.
   #

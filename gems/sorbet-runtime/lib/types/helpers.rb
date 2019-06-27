@@ -9,11 +9,11 @@ module T::Helpers
   ### Class/Module Helpers ###
 
   def abstract!
-    Private::Abstract::Declare.declare_abstract(self, type: :abstract)
+    Private::Abstract::Declare.declare_abstract(self, type: :abstract) if T::Configuration.enable_runtime_typecheck?
   end
 
   def interface!
-    Private::Abstract::Declare.declare_abstract(self, type: :interface)
+    Private::Abstract::Declare.declare_abstract(self, type: :interface) if T::Configuration.enable_runtime_typecheck?
   end
 
   # Causes a mixin to also mix in class methods from the named module.
