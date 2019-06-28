@@ -251,7 +251,9 @@ module T::Private::Methods
       if decl.bind.equal?(ARG_NOT_PROVIDED)
         decl.bind = nil
       end
-      if decl.checked.equal?(ARG_NOT_PROVIDED)
+      if !T::Configuration.enable_runtime_typecheck?
+        decl.checked = :never
+      elsif decl.checked.equal?(ARG_NOT_PROVIDED)
         decl.checked = :always
       end
       if decl.soft_notify.equal?(ARG_NOT_PROVIDED)

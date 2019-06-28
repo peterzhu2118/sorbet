@@ -96,6 +96,30 @@ module Opus::Types::Test
 
         struct.new(x: "hello", y: 10)
       end
+
+      it 'foo' do
+        base = Module.new do
+          def foo
+            "HELLO"
+          end
+        end
+
+        interface = Module.new do
+          include base
+          extend T::Sig
+          extend T::Helpers
+          abstract!
+
+          sig {abstract.void}
+          def foo; end
+        end
+
+        klass = Class.new do
+          include interface
+        end
+
+        assert_equal("HELLO", klass.new.foo)
+      end
     end
 
     describe 'inline_type_error_handler' do
